@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistRetriever", "PlaylistRetriever\PlaylistRetriever.csproj", "{CBCD239F-0995-46CF-9C4B-5D93CF4B71BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyAPI", "SpotifyAPI\SpotifyAPI.csproj", "{A2019AC5-9975-4033-B38B-A8D7FE5CC291}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBCD239F-0995-46CF-9C4B-5D93CF4B71BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCD239F-0995-46CF-9C4B-5D93CF4B71BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCD239F-0995-46CF-9C4B-5D93CF4B71BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCD239F-0995-46CF-9C4B-5D93CF4B71BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2019AC5-9975-4033-B38B-A8D7FE5CC291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2019AC5-9975-4033-B38B-A8D7FE5CC291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2019AC5-9975-4033-B38B-A8D7FE5CC291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2019AC5-9975-4033-B38B-A8D7FE5CC291}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBB9CBE0-865B-407B-A9AD-90B1B6F174EA}
+	EndGlobalSection
+EndGlobal
