@@ -219,7 +219,7 @@ namespace PlaylistRetriever
                             if (playlists.Count == 1)
                             {
                                 // Get Path to save to
-                                string saveLocation = BrowseForFilePath(PlaylistName); // TODO : Remove the need for this - ask for save dialog here instead of saving as property
+                                string saveLocation = BrowseForFilePath(StripInvalidFileNameChars(PlaylistName, ',')); // TODO : Remove the need for this - ask for save dialog here instead of saving as property
 
                                 // Return Case
                                 if (saveLocation == null)
@@ -329,61 +329,6 @@ namespace PlaylistRetriever
             return null;
         }
 
-        private string BrowseForFolderPath()
-        {
-            try
-            {
-                CommonOpenFileDialog browseDialog = new CommonOpenFileDialog();
-                browseDialog.IsFolderPicker = true;
-                browseDialog.Title = "Save Playlists";
-                browseDialog.InitialDirectory = Environment.CurrentDirectory;
-                browseDialog.RestoreDirectory = true;
-
-                if (browseDialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    if (!string.IsNullOrWhiteSpace(browseDialog.FileName))
-                    {
-                        return browseDialog.FileName.Trim();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Folder path can not be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return null;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            return null;
-
-
-            //FolderBrowserDialog browseDialog = new FolderBrowserDialog();
-
-            //if (browseDialog.ShowDialog() == DialogResult.OK)
-            //{
-            //    if (!string.IsNullOrWhiteSpace(browseDialog.SelectedPath))
-            //    {
-            //        return browseDialog.SelectedPath.Trim();
-            //    }
-            //    else
-            //    {
-            //        System.Windows.MessageBox.Show("File path can not be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //        return null;
-            //    }
-            //}
-            //else
-            //{
-            //    return null;
-            //}
-        }
-
         internal void OpenFormatWindow()
         {
             FormatWindow formatWindow = new FormatWindow();
@@ -473,6 +418,71 @@ namespace PlaylistRetriever
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        private string BrowseForFolderPath()
+        {
+            try
+            {
+                CommonOpenFileDialog browseDialog = new CommonOpenFileDialog();
+                browseDialog.IsFolderPicker = true;
+                browseDialog.Title = "Save Playlists";
+                browseDialog.InitialDirectory = Environment.CurrentDirectory;
+                browseDialog.RestoreDirectory = true;
+
+                if (browseDialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    if (!string.IsNullOrWhiteSpace(browseDialog.FileName))
+                    {
+                        return browseDialog.FileName.Trim();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Folder path can not be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            return null;
+
+
+            //FolderBrowserDialog browseDialog = new FolderBrowserDialog();
+
+            //if (browseDialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    if (!string.IsNullOrWhiteSpace(browseDialog.SelectedPath))
+            //    {
+            //        return browseDialog.SelectedPath.Trim();
+            //    }
+            //    else
+            //    {
+            //        System.Windows.MessageBox.Show("File path can not be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //        return null;
+            //    }
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+        }
+
+        private static string StripInvalidFileNameChars(string playlistName, char? charToReplaceWith = null)
+        {
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+
+            foreach (char invalidChar in invalidChars)
+                playlistName = playlistName.Replace(invalidChar, charToReplaceWith ?? ' ');
+
+            return playlistName;
         }
 
         private void UpdateLoadedPlaylists()
