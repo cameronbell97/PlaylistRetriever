@@ -12,8 +12,8 @@
             <TextBox x:Name="txtAccessKey" Text="{Binding ApiAccessKey, Mode=TwoWay}" Margin="0,0,80,0" Height="23" VerticalAlignment="Bottom" />
             <Button x:Name="btnBuildAccessKey" Content="Build..." Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="23" Width="75" Click="BtnBuildAccessKey_Click" />
         </Grid>
-        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,60,10,40">
-            
+        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,60,10,10">
+
             <TabControl x:Name="tabControl" Margin="0,0,0,0" SelectionChanged="TabControl_SelectionChanged" Padding="0">
                 <TabItem x:Name="tabFromPlaylistID" Header="From Playlist ID">
                     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="0,0,0,0" >
@@ -22,7 +22,7 @@
                             <Label x:Name="lblPlaylistID" Content="_Public Spotify Playlist ID or URL:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
                             <TextBox x:Name="txtPlaylistID" Text="{Binding Path=PlaylistID, Mode=TwoWay}" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay}" Margin="0,36,80,0" TextWrapping="Wrap" TextChanged="TxtPlaylistID_TextChanged" Height="43" VerticalAlignment="Top" ToolTip="The URL or ID of a public Spotify Playlist"/>
                             <Button x:Name="cmdLoad" Content="_Load" Click="CmdLoad_Click" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,59,0,0" Width="75" Padding="0"/>
-                            
+
                         </Grid>
 
                         <!-- Loaded Playlists Grid -->
@@ -39,7 +39,7 @@
                         </StatusBar>
 
                         <!-- Save Format Grid -->
-                        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,0,10,70" VerticalAlignment="Bottom" Height="70">
+                        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,0,10,90" VerticalAlignment="Bottom" Height="70">
                             <Label x:Name="lblFormat" Content="Save Format:" HorizontalAlignment="Left" Margin="0,0,0,45" VerticalAlignment="Bottom"/>
                             <TextBox x:Name="txtFormatExample" Text="{Binding Path=FormatString, Mode=OneWay}" Height="45" Margin="0,0,80,0" TextWrapping="Wrap" VerticalAlignment="Bottom" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
                             <Button x:Name="cmdDefault" Content="_Default" HorizontalAlignment="Right" Margin="0,0,0,25" VerticalAlignment="Bottom" Width="75" Click="CmdDefault_Click"/>
@@ -47,11 +47,15 @@
                         </Grid>
 
                         <!-- Save Location Grid -->
-                        <Grid Height="59" Margin="0,00,0,00" VerticalAlignment="Bottom" IsEnabled="False">
+                        <Grid Height="59" Margin="0,0,0,30" VerticalAlignment="Bottom" IsEnabled="False">
                             <Label x:Name="lblSaveLocation" Content="Save _Location:" Margin="10,0,0,33" HorizontalAlignment="Left" Width="86" Height="26" VerticalAlignment="Bottom"/>
                             <TextBox x:Name="txtSaveLocation" TextChanged="TxtSaveLocation_TextChanged" Text="{Binding Path=SaveLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="10,0,40,10" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
                             <Button x:Name="cmdBrowseFilesystem" Content="..." HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Width="25" Height="23" Click="CmdBrowseFilesystem_Click"/>
                         </Grid>
+                        
+                        <!-- Save & Close Buttons -->
+                        <Button x:Name="cmdSave" Content="_Save" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Click="CmdSave_Click" IsEnabled="{Binding Path=SaveEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button x:Name="cmdClose" Content="_Close" HorizontalAlignment="Right" Margin="0,0,10,10" Width="75" Height="20" VerticalAlignment="Bottom" Click="CmdClose_Click"/>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabFromSpotifyAccount" Header="From Account">
@@ -62,11 +66,6 @@
                 </TabItem>
             </TabControl>
         </Grid>
-        
         <!-- TODO : Add ToolTips -->
-
-
-        <Button x:Name="cmdSave" Content="_Save" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Click="CmdSave_Click" IsEnabled="{Binding Path=SaveEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button x:Name="cmdClose" Content="_Close" HorizontalAlignment="Right" Margin="0,0,10,10" Width="75" Height="20" VerticalAlignment="Bottom" Click="CmdClose_Click"/>
     </Grid>
 </Window>
