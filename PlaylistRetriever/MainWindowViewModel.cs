@@ -332,18 +332,16 @@ namespace PlaylistRetriever
 
         internal void OpenFormatWindow()
         {
-            FormatWindow formatWindow = new FormatWindow();
-            if (formatWindow.ShowDialog() ?? false) // TODO : Fix dialog opening behind main window
+            var response = FormatColumnsService.ShowFormatColumnsDialog();
+            if (response != null) // TODO : Fix dialog opening behind main window
             {
                 try
                 {
                     //PlaylistWriter.PlaylistColumn[] colColumns = ((FormatWindowViewModel)oFormatWindow.DataContext).ReturningColumns.ToArray();
-                    PlaylistWriter.PlaylistColumn[] columns = formatWindow.ReturnColumns.ToArray();
+                    PlaylistWriter.PlaylistColumn[] columns = response.Columns.ToArray();
 
                     if (FormatColumns(columns))
-                    {
                         CheckSaveButton();
-                    }
                 }
                 catch (Exception ex)
                 {

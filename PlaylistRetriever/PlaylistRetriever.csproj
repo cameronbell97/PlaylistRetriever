@@ -79,16 +79,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\FormatColumnsResponse.cs" />
+    <Compile Include="Services\FormatColumnsService.cs" />
     <Compile Include="Views\BuildKeyDialogWindow.xaml.cs">
       <DependentUpon>BuildKeyDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiKeyResponse.cs" />
     <Compile Include="Services\BuildKeyDialogService.cs" />
     <Compile Include="ViewModels\BuildKeyDialogViewModel.cs" />
-    <Compile Include="FormatWindowViewModel.cs" />
+    <Compile Include="ViewModels\FormatWindowViewModel.cs" />
     <Compile Include="PlaylistWriter.cs" />
     <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="FormatWindow.xaml.cs">
+    <Compile Include="Views\FormatWindow.xaml.cs">
       <DependentUpon>FormatWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\BuildKeyDialogWindow.xaml">
@@ -107,7 +109,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="FormatWindow.xaml">
+    <Page Include="Views\FormatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
