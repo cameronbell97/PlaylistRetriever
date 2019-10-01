@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
+using PlaylistRetriever.Services;
 using SpotifyAPI;
 using System;
 using System.Collections.Generic;
@@ -403,11 +404,9 @@ namespace PlaylistRetriever
 
         public void BuildKeyButtonClick()
         {
-            BuildKeyWindow bkw = new BuildKeyWindow();
-            bkw.ShowDialog();
-
-            if (bkw.DialogResult ?? false)
-                ApiAccessKey = bkw.ApiKey;
+            var response = BuildKeyDialogService.ShowBuildKeyDialog();
+            if (response != null)
+                ApiAccessKey = response.ApiKey;
         }
 
         // Protected & Private Methods //
