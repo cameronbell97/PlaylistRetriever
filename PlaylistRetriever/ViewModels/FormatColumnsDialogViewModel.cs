@@ -15,8 +15,8 @@ namespace PlaylistRetriever.ViewModels
         // Declarations //
         private ObservableCollection<PlaylistWriter.PlaylistColumn> _remainingColumns;
         private ObservableCollection<PlaylistWriter.PlaylistColumn> _takenColumns;
-        private int _totalColumnIndex;
-        private int _orderedColumnIndex;
+        private int _remainingColumnsIndex;
+        private int _takenColumnsIndex;
 
         private DialogResultAction dialogResult;
 
@@ -26,7 +26,7 @@ namespace PlaylistRetriever.ViewModels
             // Initialize Declarations
             TakeEnabled = true;
             ReturnEnabled = false;
-            TotalColumnItems = new ObservableCollection<PlaylistWriter.PlaylistColumn>
+            RemainingColumns = new ObservableCollection<PlaylistWriter.PlaylistColumn>
             {
                 PlaylistWriter.PlaylistColumn.TrackName,
                 PlaylistWriter.PlaylistColumn.TrackArtists,
@@ -37,7 +37,7 @@ namespace PlaylistRetriever.ViewModels
                 PlaylistWriter.PlaylistColumn.Duration,
                 PlaylistWriter.PlaylistColumn.IsLocal
             };
-            OrderedColumnItems = new ObservableCollection<PlaylistWriter.PlaylistColumn>();
+            TakenColumns = new ObservableCollection<PlaylistWriter.PlaylistColumn>();
 
             // Initialize Commands
             SaveCommand = new RelayCommand<Window>(Save);
@@ -53,46 +53,46 @@ namespace PlaylistRetriever.ViewModels
         {
             get => new FormatColumnsResponse
             {
-                Columns = new List<PlaylistWriter.PlaylistColumn>(OrderedColumnItems),
+                Columns = new List<PlaylistWriter.PlaylistColumn>(TakenColumns),
                 DialogResult = this.dialogResult
             };
         }
         public bool TakeEnabled { get; set; }
         public bool ReturnEnabled { get; set; }
-        public ObservableCollection<PlaylistWriter.PlaylistColumn> TotalColumnItems
+        public ObservableCollection<PlaylistWriter.PlaylistColumn> RemainingColumns
         {
             get => _remainingColumns;
             set
             {
                 _remainingColumns = value;
-                RaisePropertyChanged(() => TotalColumnItems);
+                RaisePropertyChanged(() => RemainingColumns);
             }
         }
-        public ObservableCollection<PlaylistWriter.PlaylistColumn> OrderedColumnItems
+        public ObservableCollection<PlaylistWriter.PlaylistColumn> TakenColumns
         {
             get => _takenColumns;
             set
             {
                 _takenColumns = value;
-                RaisePropertyChanged(() => OrderedColumnItems);
+                RaisePropertyChanged(() => TakenColumns);
             }
         }
-        public int TotalColumnIndex
+        public int RemainingColumnsIndex
         {
-            get => _totalColumnIndex;
+            get => _remainingColumnsIndex;
             set
             {
-                _totalColumnIndex = value;
-                RaisePropertyChanged(() => TotalColumnIndex);
+                _remainingColumnsIndex = value;
+                RaisePropertyChanged(() => RemainingColumnsIndex);
             }
         }
-        public int OrderedColumnIndex
+        public int TakenColumnsIndex
         {
-            get => _orderedColumnIndex;
+            get => _takenColumnsIndex;
             set
             {
-                _orderedColumnIndex = value;
-                RaisePropertyChanged(() => OrderedColumnIndex);
+                _takenColumnsIndex = value;
+                RaisePropertyChanged(() => TakenColumnsIndex);
             }
         }
 
@@ -123,60 +123,60 @@ namespace PlaylistRetriever.ViewModels
 
         private void TakeAll()
         {
-            if (TotalColumnItems == null)
+            if (RemainingColumns == null)
                 return;
 
-            foreach (var item in TotalColumnItems)
+            foreach (var item in RemainingColumns)
             {
-                OrderedColumnItems.Add(item);
+                TakenColumns.Add(item);
             }
-            TotalColumnItems.Clear();
+            RemainingColumns.Clear();
 
             RaiseListViewPropertiesChanged();
         }
 
         private void Take()
         {
-            if (TotalColumnItems == null)
+            if (RemainingColumns == null)
                 return;
 
-            if (TotalColumnIndex < 0 || TotalColumnIndex >= TotalColumnItems.Count)
+            if (RemainingColumnsIndex < 0 || RemainingColumnsIndex >= RemainingColumns.Count)
                 return;
             
-            OrderedColumnItems.Add(TotalColumnItems[TotalColumnIndex]);
-            int savedIndex = TotalColumnIndex;
-            TotalColumnItems.Remove(TotalColumnItems[TotalColumnIndex]);
-            TotalColumnIndex = savedIndex >= TotalColumnItems.Count ? TotalColumnItems.Count - 1 : savedIndex;
+            TakenColumns.Add(RemainingColumns[RemainingColumnsIndex]);
+            int savedIndex = RemainingColumnsIndex;
+            RemainingColumns.Remove(RemainingColumns[RemainingColumnsIndex]);
+            RemainingColumnsIndex = savedIndex >= RemainingColumns.Count ? RemainingColumns.Count - 1 : savedIndex;
 
             RaiseListViewPropertiesChanged();
         }
 
         private void Return()
         {
-            if (OrderedColumnItems == null)
+            if (TakenColumns == null)
                 return;
 
-            if (OrderedColumnIndex < 0 || OrderedColumnIndex >= OrderedColumnItems.Count)
+            if (TakenColumnsIndex < 0 || TakenColumnsIndex >= TakenColumns.Count)
                 return;
 
-            TotalColumnItems.Add(OrderedColumnItems[OrderedColumnIndex]);
-            int savedIndex = OrderedColumnIndex;
-            OrderedColumnItems.Remove(OrderedColumnItems[OrderedColumnIndex]);
-            OrderedColumnIndex = savedIndex >= OrderedColumnItems.Count ? OrderedColumnItems.Count - 1 : savedIndex;
+            RemainingColumns.Add(TakenColumns[TakenColumnsIndex]);
+            int savedIndex = TakenColumnsIndex;
+            TakenColumns.Remove(TakenColumns[TakenColumnsIndex]);
+            TakenColumnsIndex = savedIndex >= TakenColumns.Count ? TakenColumns.Count - 1 : savedIndex;
 
             RaiseListViewPropertiesChanged();
         }
 
         private void ReturnAll()
         {
-            if (OrderedColumnItems == null)
+            if (TakenColumns == null)
                 return;
 
-            foreach (var item in OrderedColumnItems)
+            foreach (var item in TakenColumns)
             {
-                TotalColumnItems.Add(item);
+                RemainingColumns.Add(item);
             }
-            OrderedColumnItems.Clear();
+            TakenColumns.Clear();
 
             RaiseListViewPropertiesChanged();
         }
@@ -218,8 +218,8 @@ namespace PlaylistRetriever.ViewModels
 
         public void RaiseListViewPropertiesChanged()
         {
-            RaisePropertyChanged(() => TotalColumnItems);
-            RaisePropertyChanged(() => OrderedColumnItems);
+            RaisePropertyChanged(() => RemainingColumns);
+            RaisePropertyChanged(() => TakenColumns);
         }
     }
 }

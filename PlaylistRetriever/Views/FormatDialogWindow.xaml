@@ -13,7 +13,7 @@
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
         <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,10,10,40" HorizontalAlignment="Left" VerticalAlignment="Stretch" Panel.ZIndex="1">
             <Label Content="Select the columns you want saved" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="2"/>
-            <ListView Margin="0,31,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="195" Panel.ZIndex="2" ItemsSource="{Binding TotalColumnItems, Mode=TwoWay}" SelectedIndex="{Binding TotalColumnIndex, Mode=TwoWay}" />
+            <ListView Margin="0,31,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="195" Panel.ZIndex="2" ItemsSource="{Binding RemainingColumns, Mode=TwoWay}" SelectedIndex="{Binding RemainingColumnsIndex, Mode=TwoWay}" />
         </Grid>
         <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="205,0,0,0" Width="60" Height="212" HorizontalAlignment="Left" VerticalAlignment="Stretch" Panel.ZIndex="1">
             <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="0,0,0,0" Width="30" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="2">
@@ -33,7 +33,7 @@
         </Grid>
         <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="0,10,10,40" VerticalAlignment="Stretch" HorizontalAlignment="Right" Panel.ZIndex="1">
             <Label Content="Include columns in this order" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="2"/>
-            <ListView Margin="0,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="195" Panel.ZIndex="2" ItemsSource="{Binding OrderedColumnItems, Mode=TwoWay}" SelectedIndex="{Binding OrderedColumnIndex, Mode=TwoWay}"/>
+            <ListView Margin="0,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="195" Panel.ZIndex="2" ItemsSource="{Binding TakenColumns, Mode=TwoWay}" SelectedIndex="{Binding TakenColumnsIndex, Mode=TwoWay}"/>
         </Grid>
         <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Panel.ZIndex="1">
             <Button Content="_Cancel" Margin="0,0,0,0" Width="75" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="2" Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
