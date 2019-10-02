@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 // TODO : Refactor & <comment> this class
-namespace PlaylistRetriever
+namespace PlaylistRetriever.Models
 {
     public class PlaylistWriter
     {

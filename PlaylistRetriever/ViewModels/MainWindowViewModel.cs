@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
+using PlaylistRetriever.Models;
 using PlaylistRetriever.Services;
 using SpotifyAPI;
 using System;

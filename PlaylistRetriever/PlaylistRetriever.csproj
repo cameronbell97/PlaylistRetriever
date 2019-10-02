@@ -90,7 +90,7 @@
     <Compile Include="Services\BuildKeyDialogService.cs" />
     <Compile Include="ViewModels\BuildKeyDialogViewModel.cs" />
     <Compile Include="ViewModels\FormatWindowViewModel.cs" />
-    <Compile Include="PlaylistWriter.cs" />
+    <Compile Include="Models\PlaylistWriter.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\FormatWindow.xaml.cs">
       <DependentUpon>FormatWindow.xaml</DependentUpon>
