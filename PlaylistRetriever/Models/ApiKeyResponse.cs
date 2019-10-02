@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlaylistRetriever.Models
 {
-    class ApiKeyResponse
+    public class ApiKeyResponse : DialogResponse
     {
         public string ApiKey { get; set; }
     }

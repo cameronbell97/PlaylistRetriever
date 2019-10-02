@@ -4,12 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlaylistRetriever"
-        xmlns:viewModels="clr-namespace:PlaylistRetriever.ViewModels"
         mc:Ignorable="d"
-        Title="BuildKeyWindow" Height="155" Width="400" MinHeight="155" MinWidth="400">
-    <Window.DataContext>
-        <viewModels:BuildKeyDialogViewModel/>
-    </Window.DataContext>
+        Title="BuildKeyWindow" Height="155" Width="400" MinHeight="155" MinWidth="400"
+        DataContext="{Binding BuildKeyDialog, Source={StaticResource Locator}}">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Label x:Name="lblID" Content="Client ID:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Padding="2,0,0,0" />
         <TextBox x:Name="txtID" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,25,10,0" Text="{Binding Path=ClientID, Mode=TwoWay}" />

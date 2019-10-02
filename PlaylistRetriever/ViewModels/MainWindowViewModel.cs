@@ -1,10 +1,13 @@
-﻿using Microsoft.Win32;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using PlaylistRetriever.Services;
 using SpotifyAPI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
@@ -17,13 +20,13 @@ using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace PlaylistRetriever
+namespace PlaylistRetriever.ViewModels
 {
     // TODO : Comment functions properly
     /// <summary>
     /// ViewModel class for Main Window
     /// </summary>
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : ViewModelBase
     {
         // Declarations //
         private const string SPOTIFY_PLAYLIST_COLUMNS_TO_RETRIEVE = "collaborative,description,id,name,owner,is_public,tracks(total,limit),type";
@@ -38,16 +41,17 @@ namespace PlaylistRetriever
         private string _formatString = string.Empty;
         private string _saveLocation = string.Empty;
         private string _spotifyApiAccessKey = string.Empty;
+        private string _playlistID;
 
         private List<SpotifyPlaylist> playlists = null;
         private PlaylistWriter playlistWriter = null;
         private SpotifyClient spotifyClient = null;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private ObservableCollection<SpotifyPlaylist> _loadedPlaylists;
 
         // Constructors //
         public MainWindowViewModel()
         {
+            // Initialize Declarations
             PlaylistID = string.Empty;
             SaveLocation = string.Empty;
             FormatString = string.Empty;
@@ -55,19 +59,38 @@ namespace PlaylistRetriever
             SelectedTab = 0;
             playlistWriter = new PlaylistWriter();
             spotifyClient = new SpotifyClient();
+            LoadedPlaylistsList = new ObservableCollection<SpotifyPlaylist>();
 
             ApiAccessKey = CheckSubDirectoryForAccessKey(System.AppDomain.CurrentDomain.BaseDirectory) ?? string.Empty;
+
+            // Initialize Commands
+            ShowBuildKeyDialogCommand = new RelayCommand(ShowBuildKeyDialog);
+            OpenFormatWindowCommand = new RelayCommand(OpenFormatWindow);
+            FormatColumnsAsDefaultCommand = new RelayCommand(FormatColumnsAsDefault);
+            CloseCommand = new RelayCommand<Window>(Close);
+            LoadPlaylistFromIDCommand = new RelayCommand(async () => await LoadPlaylistFromIDAsync());
+            SavePlaylistFromIDCommand = new RelayCommand(async () => await SavePlaylistFromIDAsync());
         }
 
         // Properties //
-        public string PlaylistID { get; set; }
+        public string PlaylistID
+        {
+            get => _playlistID;
+            set
+            {
+                _playlistID = value;
+                RaisePropertyChanged(() => PlaylistID);
+                ValidateSaveButton();
+            }
+        }
         public string SaveLocation
         {
             get { return _saveLocation; }
             set
             {
                 _saveLocation = value;
-                OnPropertyChanged("SaveLocation");
+                RaisePropertyChanged(() => SaveLocation);
+                ValidateSaveButton();
             }
         }
         public string FormatString
@@ -76,31 +99,16 @@ namespace PlaylistRetriever
             set
             {
                 _formatString = value;
-                OnPropertyChanged("FormatString");
+                RaisePropertyChanged(() => FormatString);
             }
         }
-        internal void FormatColumnsAsDefault()
-        {
-            PlaylistWriter.PlaylistColumn[] columns =
-            {
-                PlaylistWriter.PlaylistColumn.TrackName,
-                PlaylistWriter.PlaylistColumn.TrackArtists,
-                PlaylistWriter.PlaylistColumn.AlbumName
-            };
-
-            if (FormatColumns(columns))
-            {
-                CheckSaveButton();
-            }
-        }
-
         public string PlaylistLoadStatus
         {
             get { return _playlistLoadStatus; }
             set
             {
                 _playlistLoadStatus = value;
-                OnPropertyChanged("PlaylistLoadStatus");
+                RaisePropertyChanged(() => PlaylistLoadStatus);
             }
         }
         public bool SaveEnabled
@@ -109,7 +117,7 @@ namespace PlaylistRetriever
             set
             {
                 _saveEnabled = value;
-                OnPropertyChanged("SaveEnabled");
+                RaisePropertyChanged(() => SaveEnabled);
             }
         }
         public bool LoadEnabled
@@ -118,12 +126,12 @@ namespace PlaylistRetriever
             set
             {
                 _loadEnabled = value;
-                OnPropertyChanged("LoadEnabled");
+                RaisePropertyChanged(() => LoadEnabled);
             }
         }
         public bool ReloadPlaylistEnabled
         {
-            get
+            get // big TODO energy
             {
                 return false;
             }
@@ -134,7 +142,7 @@ namespace PlaylistRetriever
         }
         public bool DeletePlaylistEnabled
         {
-            get
+            get // big TODO energy
             {
                 return false;
             }
@@ -149,17 +157,47 @@ namespace PlaylistRetriever
             set
             {
                 _spotifyApiAccessKey = value;
-                OnPropertyChanged("ApiAccessKey");
+                RaisePropertyChanged(() => ApiAccessKey);
             }
         }
         public int SelectedTab { get; set; }
         public string PlaylistName { get; set; }
-        public ListView LoadedPlaylistsList { get; set; }
-        
-        // Public Methods //
-        internal void CheckSaveButton()
+        public ObservableCollection<SpotifyPlaylist> LoadedPlaylistsList
+        {
+            get => _loadedPlaylists;
+            set
+            {
+                _loadedPlaylists = value;
+                RaisePropertyChanged(() => LoadedPlaylistsList);
+            }
+        }
+
+        // Commands //
+        public RelayCommand<Window> CloseCommand { get; private set; }
+        public RelayCommand ShowBuildKeyDialogCommand { get; private set; }
+        public RelayCommand OpenFormatWindowCommand { get; private set; }
+        public RelayCommand FormatColumnsAsDefaultCommand { get; private set; }
+        public RelayCommand LoadPlaylistFromIDCommand { get; private set; }
+        public RelayCommand SavePlaylistFromIDCommand { get; private set; }
+
+        // Methods //
+        internal void ValidateSaveButton()
         {
             SaveEnabled = ValidateSaveRequirements();
+        }
+        internal void FormatColumnsAsDefault()
+        {
+            PlaylistWriter.PlaylistColumn[] columns =
+            {
+                PlaylistWriter.PlaylistColumn.TrackName,
+                PlaylistWriter.PlaylistColumn.TrackArtists,
+                PlaylistWriter.PlaylistColumn.AlbumName
+            };
+
+            if (FormatColumns(columns))
+            {
+                ValidateSaveButton();
+            }
         }
 
         /// <summary>
@@ -204,7 +242,7 @@ namespace PlaylistRetriever
             }
         }
 
-        internal async Task SavePlaylistFromID()
+        internal async Task SavePlaylistFromIDAsync()
         {
             if (!ValidateSaveRequirements())
                 return;
@@ -333,7 +371,7 @@ namespace PlaylistRetriever
         internal void OpenFormatWindow()
         {
             var response = FormatColumnsService.ShowFormatColumnsDialog();
-            if (response != null) // TODO : Fix dialog opening behind main window
+            if (response != null && response.Columns != null && response.DialogResult == Models.DialogResultAction.Submit)
             {
                 try
                 {
@@ -341,15 +379,11 @@ namespace PlaylistRetriever
                     PlaylistWriter.PlaylistColumn[] columns = response.Columns.ToArray();
 
                     if (FormatColumns(columns))
-                        CheckSaveButton();
+                        ValidateSaveButton();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(string.Format("An error has occurred.{0}{1}", Environment.NewLine, ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }
-                finally
-                {
-                    // TODO : ?
+                    MessageBox.Show($"Encountered an error saving spreadsheet format data:\r\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
         }
@@ -362,7 +396,7 @@ namespace PlaylistRetriever
             {
                 PlaylistName = playlists[0].name;
                 PlaylistLoadStatus = string.Format("Succesfully loaded \"{0}\"", PlaylistName);
-                CheckSaveButton();
+                ValidateSaveButton();
             }
             else
             {
@@ -400,21 +434,11 @@ namespace PlaylistRetriever
             return true;
         }
 
-        public void BuildKeyButtonClick()
+        public void ShowBuildKeyDialog()
         {
             var response = BuildKeyDialogService.ShowBuildKeyDialog();
-            if (response != null)
+            if (response != null && response.DialogResult == Models.DialogResultAction.Submit)
                 ApiAccessKey = response.ApiKey;
-        }
-
-        // Protected & Private Methods //
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
         }
 
         private string BrowseForFolderPath()
@@ -484,19 +508,16 @@ namespace PlaylistRetriever
 
         private void UpdateLoadedPlaylists()
         {
-            if (LoadedPlaylistsList == null)
+            LoadedPlaylistsList = LoadedPlaylistsList ?? new ObservableCollection<SpotifyPlaylist>();
+            if (LoadedPlaylistsList == null || playlists == null)
                 return;
 
-            ItemCollection playlistList = LoadedPlaylistsList.Items;
+            LoadedPlaylistsList.Clear();
 
-            if (playlistList == null || playlists == null)
-                return;
-
-            playlistList.Clear();
             foreach (SpotifyPlaylist playlist in playlists)
-            {
-                playlistList.Add(playlist.name);
-            }
+                LoadedPlaylistsList.Add(playlist);
+
+            RaisePropertyChanged(() => LoadedPlaylistsList);
         }
 
         private bool ValidateSaveRequirements()
@@ -585,6 +606,12 @@ namespace PlaylistRetriever
             {
                 return null;
             }
+        }
+
+        private void Close(Window window)
+        {
+            if (window != null)
+                window.Close();
         }
     }
 }

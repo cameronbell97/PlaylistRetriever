@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlaylistRetriever.Models
 {
-    public class FormatColumnsResponse
+    public class FormatColumnsResponse : DialogResponse
     {
         public List<PlaylistWriter.PlaylistColumn> Columns { get; set; }
     }

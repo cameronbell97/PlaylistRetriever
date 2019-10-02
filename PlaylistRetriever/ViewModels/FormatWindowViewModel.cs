@@ -18,6 +18,8 @@ namespace PlaylistRetriever.ViewModels
         private int _totalColumnIndex;
         private int _orderedColumnIndex;
 
+        private DialogResultAction dialogResult;
+
         // Constructors //
         public FormatWindowViewModel()
         {
@@ -36,8 +38,6 @@ namespace PlaylistRetriever.ViewModels
                 PlaylistWriter.PlaylistColumn.IsLocal
             };
             OrderedColumnItems = new ObservableCollection<PlaylistWriter.PlaylistColumn>();
-            ReturningColumns = new List<PlaylistWriter.PlaylistColumn>();
-            PopulateListView();
 
             // Initialize Commands
             SaveCommand = new RelayCommand<Window>(Save);
@@ -53,12 +53,12 @@ namespace PlaylistRetriever.ViewModels
         {
             get => new FormatColumnsResponse
             {
-                Columns = ReturningColumns
+                Columns = new List<PlaylistWriter.PlaylistColumn>(OrderedColumnItems),
+                DialogResult = this.dialogResult
             };
         }
         public bool TakeEnabled { get; set; }
         public bool ReturnEnabled { get; set; }
-        public List<PlaylistWriter.PlaylistColumn> ReturningColumns { get; private set; }
         public ObservableCollection<PlaylistWriter.PlaylistColumn> TotalColumnItems
         {
             get => _remainingColumns;
@@ -107,8 +107,7 @@ namespace PlaylistRetriever.ViewModels
         // Methods //
         private void Save(Window window)
         {
-            foreach (var sItem in OrderedColumnItems)
-                ReturningColumns.Add(sItem);
+            dialogResult = DialogResultAction.Submit;
 
             if (window != null)
                 window.Close();
@@ -116,7 +115,7 @@ namespace PlaylistRetriever.ViewModels
 
         private void Cancel(Window window)
         {
-            ReturningColumns = null;
+            dialogResult = DialogResultAction.Cancel;
 
             if (window != null)
                 window.Close();
@@ -141,14 +140,13 @@ namespace PlaylistRetriever.ViewModels
             if (TotalColumnItems == null)
                 return;
 
-            int selectIndex = TotalColumnItems.SelectedIndex;
-            if (selectIndex < 0 || selectIndex >= TotalColumnItems.Items.Count)
+            if (TotalColumnIndex < 0 || TotalColumnIndex >= TotalColumnItems.Count)
                 return;
-
-            OrderedColumnItems.Items.Add(TotalColumnItems.SelectedItem);
-            TotalColumnItems.Items.Remove(TotalColumnItems.SelectedItem);
-
-            TotalColumnItems.SelectedIndex = TotalColumnItems.Items.IsEmpty ? -1 : (TotalColumnItems.Items.Count > selectIndex) ? selectIndex : selectIndex - 1;
+            
+            OrderedColumnItems.Add(TotalColumnItems[TotalColumnIndex]);
+            int savedIndex = TotalColumnIndex;
+            TotalColumnItems.Remove(TotalColumnItems[TotalColumnIndex]);
+            TotalColumnIndex = savedIndex >= TotalColumnItems.Count ? TotalColumnItems.Count - 1 : savedIndex;
 
             RaiseListViewPropertiesChanged();
         }
@@ -158,14 +156,13 @@ namespace PlaylistRetriever.ViewModels
             if (OrderedColumnItems == null)
                 return;
 
-            int selectIndex = OrderedColumnItems.SelectedIndex;
-            if (selectIndex < 0 || selectIndex >= OrderedColumnItems.Items.Count)
+            if (OrderedColumnIndex < 0 || OrderedColumnIndex >= OrderedColumnItems.Count)
                 return;
 
-            TotalColumnItems.Items.Add(OrderedColumnItems.SelectedItem);
-            OrderedColumnItems.Items.Remove(OrderedColumnItems.SelectedItem);
-
-            OrderedColumnItems.SelectedIndex = OrderedColumnItems.Items.IsEmpty ? -1 : (OrderedColumnItems.Items.Count > selectIndex) ? selectIndex : selectIndex - 1;
+            TotalColumnItems.Add(OrderedColumnItems[OrderedColumnIndex]);
+            int savedIndex = OrderedColumnIndex;
+            OrderedColumnItems.Remove(OrderedColumnItems[OrderedColumnIndex]);
+            OrderedColumnIndex = savedIndex >= OrderedColumnItems.Count ? OrderedColumnItems.Count - 1 : savedIndex;
 
             RaiseListViewPropertiesChanged();
         }
@@ -175,27 +172,27 @@ namespace PlaylistRetriever.ViewModels
             if (OrderedColumnItems == null)
                 return;
 
-            foreach (string item in OrderedColumnItems.Items)
+            foreach (var item in OrderedColumnItems)
             {
-                TotalColumnItems.Items.Add(item);
+                TotalColumnItems.Add(item);
             }
-            OrderedColumnItems.Items.Clear();
+            OrderedColumnItems.Clear();
 
             RaiseListViewPropertiesChanged();
         }
 
-        private void PopulateListView()
-        {
-            if (_remainingColumns == null || TotalColumnItems == null || OrderedColumnItems == null)
-                return;
+        //private void PopulateListView()
+        //{
+        //    if (TotalColumnItems == null || OrderedColumnItems == null)
+        //        return;
 
-            foreach (PlaylistWriter.PlaylistColumn col in _remainingColumns)
-            {
-                TotalColumnItems.Items.Add(col.ToString());
-            }
+        //    foreach (PlaylistWriter.PlaylistColumn col in TotalColumnItems)
+        //    {
+        //        TotalColumnItems.Add(col);
+        //    }
 
-            RaiseListViewPropertiesChanged();
-        }
+        //    RaiseListViewPropertiesChanged();
+        //}
 
         private PlaylistWriter.PlaylistColumn RecreateColumn(string columnName)
         {
