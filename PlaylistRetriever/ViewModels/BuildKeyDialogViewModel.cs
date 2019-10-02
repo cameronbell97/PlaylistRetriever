@@ -8,12 +8,13 @@ using System.Windows;
 namespace PlaylistRetriever.ViewModels
 {
     // TODO : Complete (OnPropertyChanged, set text boxes to properties)
-    class BuildKeyDialogViewModel : ViewModelBase
+    public class BuildKeyDialogViewModel : ViewModelBase
     {
         // Declarations //
-        public event PropertyChangedEventHandler PropertyChanged;
         private string _clientSecret;
         private string _clientID;
+        private string _clientSecretSaveState;
+        private string _clientIDSaveState;
 
         // Constructors //
         public BuildKeyDialogViewModel()
@@ -48,10 +49,11 @@ namespace PlaylistRetriever.ViewModels
         }
         public ApiKeyResponse Response
         {
-            get => !Cancelled ? new ApiKeyResponse
+            get => new ApiKeyResponse
             {
-                ApiKey = SpotifyClient.GetEncodedAPIKey(ClientID, ClientSecret)
-            } : null;
+                ApiKey = SpotifyClient.GetEncodedAPIKey(ClientID, ClientSecret),
+                DialogResult = Cancelled ? DialogResultAction.Cancel : DialogResultAction.Submit
+            };
         }
 
         // Commands //
@@ -62,6 +64,8 @@ namespace PlaylistRetriever.ViewModels
         // Methods //
         private void BuildKey(Window window)
         {
+            _clientIDSaveState = ClientID;
+            _clientSecretSaveState = ClientSecret;
             Cancelled = false;
             if (window != null)
                 window.Close();
@@ -69,6 +73,8 @@ namespace PlaylistRetriever.ViewModels
 
         private void Cancel(Window window)
         {
+            ClientID = _clientIDSaveState;
+            ClientSecret = _clientSecretSaveState;
             Cancelled = true;
             if (window != null)
                 window.Close();

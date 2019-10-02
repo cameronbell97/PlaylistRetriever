@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PlaylistRetriever.Models
 {
-    public class ApiKeyResponse : DialogResponse
+    public class FormatColumnsResponse : DialogResponse
     {
-        public string ApiKey { get; set; }
+        public List<PlaylistWriter.PlaylistColumn> Columns { get; set; }
     }
 }
