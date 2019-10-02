@@ -14,8 +14,9 @@
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using PlaylistRetriever.ViewModels;
 
-namespace PlaylistRetriever.ViewModels
+namespace PlaylistRetriever.Infrastructure
 {
     public class ViewModelLocator
     {
@@ -37,20 +38,20 @@ namespace PlaylistRetriever.ViewModels
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register<MainWindowViewModel>();
-            SimpleIoc.Default.Register<FormatWindowViewModel>();
+            SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<FormatColumnsDialogViewModel>();
             SimpleIoc.Default.Register<BuildKeyDialogViewModel>();
         }
 
         // Properties //
-        public MainWindowViewModel Main
+        public MainViewModel Main
         {
-            get => ServiceLocator.Current.GetInstance<MainWindowViewModel>();
+            get => ServiceLocator.Current.GetInstance<MainViewModel>();
         }
 
-        public FormatWindowViewModel FormatWindow
+        public FormatColumnsDialogViewModel FormatWindow
         {
-            get => ServiceLocator.Current.GetInstance<FormatWindowViewModel>();
+            get => ServiceLocator.Current.GetInstance<FormatColumnsDialogViewModel>();
         }
 
         public BuildKeyDialogViewModel BuildKeyDialog

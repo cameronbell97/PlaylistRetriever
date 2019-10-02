@@ -3,14 +3,14 @@ using PlaylistRetriever.ViewModels;
 
 namespace PlaylistRetriever.Services
 {
-    class FormatColumnsService
+    static class FormatColumnsDialogService
     {
         public static FormatColumnsResponse ShowFormatColumnsDialog()
         {
             var dialog = new FormatWindow();
             dialog.ShowDialog();
 
-            return dialog.DataContext == null ? null : (dialog.DataContext as FormatWindowViewModel).Response;
+            return dialog.DataContext == null ? null : (dialog.DataContext as FormatColumnsDialogViewModel).Response;
         }
     }
 }

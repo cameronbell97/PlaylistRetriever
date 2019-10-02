@@ -27,7 +27,7 @@ namespace PlaylistRetriever.ViewModels
     /// <summary>
     /// ViewModel class for Main Window
     /// </summary>
-    public class MainWindowViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         // Declarations //
         private const string SPOTIFY_PLAYLIST_COLUMNS_TO_RETRIEVE = "collaborative,description,id,name,owner,is_public,tracks(total,limit),type";
@@ -50,7 +50,7 @@ namespace PlaylistRetriever.ViewModels
         private ObservableCollection<SpotifyPlaylist> _loadedPlaylists;
 
         // Constructors //
-        public MainWindowViewModel()
+        public MainViewModel()
         {
             // Initialize Declarations
             PlaylistID = string.Empty;
@@ -371,7 +371,7 @@ namespace PlaylistRetriever.ViewModels
 
         internal void OpenFormatWindow()
         {
-            var response = FormatColumnsService.ShowFormatColumnsDialog();
+            var response = FormatColumnsDialogService.ShowFormatColumnsDialog();
             if (response != null && response.Columns != null && response.DialogResult == Models.DialogResultAction.Submit)
             {
                 try

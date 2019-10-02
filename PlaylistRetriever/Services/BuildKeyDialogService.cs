@@ -3,7 +3,7 @@ using PlaylistRetriever.ViewModels;
 
 namespace PlaylistRetriever.Services
 {
-    class BuildKeyDialogService
+    static class BuildKeyDialogService
     {
         public static ApiKeyResponse ShowBuildKeyDialog()
         {

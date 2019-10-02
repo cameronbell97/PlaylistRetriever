@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace PlaylistRetriever.ViewModels
 {
-    public class FormatWindowViewModel : ViewModelBase
+    public class FormatColumnsDialogViewModel : ViewModelBase
     {
         // Declarations //
         private ObservableCollection<PlaylistWriter.PlaylistColumn> _remainingColumns;
@@ -21,7 +21,7 @@ namespace PlaylistRetriever.ViewModels
         private DialogResultAction dialogResult;
 
         // Constructors //
-        public FormatWindowViewModel()
+        public FormatColumnsDialogViewModel()
         {
             // Initialize Declarations
             TakeEnabled = true;
