@@ -5,14 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlaylistRetriever"
         mc:Ignorable="d"
-        Title="BuildKeyWindow" Height="155" Width="400" MinHeight="155" MinWidth="400"
+        Title="BuildKeyWindow" Width="400" MinWidth="400" Height="150" MinHeight="150" MaxHeight="150"
+        FontFamily="Verdana" FontSize="12"
         DataContext="{Binding BuildKeyDialog, Source={StaticResource Locator}}">
-    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-        <Label x:Name="lblID" Content="Client ID:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Padding="2,0,0,0" />
-        <TextBox x:Name="txtID" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,25,10,0" Text="{Binding Path=ClientID, Mode=TwoWay}" />
-        <Label x:Name="lblSecret" Content="Client Secret:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,50,0,0" Padding="2,0,0,0" />
-        <TextBox x:Name="txtSecret" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,65,10,0" Text="{Binding Path=ClientSecret, Mode=TwoWay}" />
-        <Button x:Name="btnCancel" Content="_Cancel" Width="75" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
-        <Button x:Name="btnBuild" Content="_Build" Width="75" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,90,10" Command="{Binding BuildCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Client ID:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0" Padding="0" />
+        <TextBox Grid.Row="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0" Text="{Binding Path=ClientID, Mode=TwoWay}" />
+        <Label Grid.Row="2"  Content="Client Secret:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0" Padding="0" />
+        <TextBox Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0" Text="{Binding Path=ClientSecret, Mode=TwoWay}" />
+
+        <StackPanel Grid.Row="4" Margin="5,0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <Button x:Name="btnBuild" Content="_Build" Width="75" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5,0" Command="{Binding BuildCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+            <Button x:Name="btnCancel" Content="_Cancel" Width="75" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0" Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+        </StackPanel>
     </Grid>
 </Window>

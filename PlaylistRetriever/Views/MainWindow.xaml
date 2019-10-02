@@ -6,25 +6,26 @@
         xmlns:local="clr-namespace:PlaylistRetriever"
         mc:Ignorable="d"
         Title="Spotify Playlist Retriever" Height="420" Width="420" MinWidth="420" MinHeight="472"
+        FontFamily="Verdana" FontSize="12"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Window.Resources>
         <Style x:Key="myHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
     </Window.Resources>
-    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey }}" Height="50" Margin="5,0,5,0" VerticalAlignment="Top">
+    <Grid>
+        <Grid Height="50" Margin="5,0,5,0" VerticalAlignment="Top">
             <Label x:Name="lblEncodedAccessKey" Content="Spotify Access Key:" Padding="2" />
             <TextBox x:Name="txtAccessKey" Text="{Binding ApiAccessKey, Mode=TwoWay}" Margin="0,0,80,0" Height="20" VerticalAlignment="Bottom" />
             <Button x:Name="btnBuildAccessKey" Content="Build..." Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="20" Width="75" Command="{Binding ShowBuildKeyDialogCommand}" />
         </Grid>
-        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="0,55,0,0">
+        <Grid Margin="0,55,0,0">
 
             <TabControl x:Name="tabControl" Margin="0" Padding="0">
                 <TabItem x:Name="tabFromPlaylistID" Header="From Playlist ID">
-                    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="0" >
+                    <Grid Margin="0" >
                         <!-- Spotify Playlist Link Grid -->
-                        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,0,10,0" VerticalAlignment="Top" >
+                        <Grid Margin="10,0,10,0" VerticalAlignment="Top" >
                             <Label x:Name="lblPlaylistID" Content="_Public Spotify Playlist ID or URL:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
                             <TextBox x:Name="txtPlaylistID" Text="{Binding Path=PlaylistID, Mode=TwoWay}" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay}" Margin="0,36,80,0" TextWrapping="Wrap" Height="43" VerticalAlignment="Top" ToolTip="The URL or ID of a public Spotify Playlist"/>
                             <Button x:Name="cmdLoad" Content="_Load" Command="{Binding LoadPlaylistFromIDCommand}" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,59,0,0" Width="75" Padding="0"/>
@@ -32,7 +33,7 @@
                         </Grid>
 
                         <!-- Loaded Playlists Grid -->
-                        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,79,10,160">
+                        <Grid Margin="10,79,10,160">
                             <Label x:Name="lblLoadedPlaylists" Content="Loaded Playlists:"/>
                             <ListView x:Name="lvwLoadedPlaylists" Margin="0,25,80,00" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding LoadedPlaylistsList, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                 <ListView.View>
@@ -46,12 +47,12 @@
                         </Grid>
 
                         <!-- Status Bar -->
-                        <StatusBar x:Name="sbPlaylistLoader" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Height="20" VerticalAlignment="Bottom" Margin="0,0,0,140" >
+                        <StatusBar x:Name="sbPlaylistLoader" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Height="20" VerticalAlignment="Bottom" Margin="0,0,0,140" >
                             <StatusBarItem x:Name="sbiPlaylistLoadStatus" Content="{Binding Path=PlaylistLoadStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Height="20" VerticalAlignment="Bottom" Margin="0,0,0,0" Padding="6,0,6,0"></StatusBarItem>
                         </StatusBar>
 
                         <!-- Save Format Grid -->
-                        <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Margin="10,0,10,90" VerticalAlignment="Bottom" Height="70">
+                        <Grid Margin="10,0,10,90" VerticalAlignment="Bottom" Height="70">
                             <Label x:Name="lblFormat" Content="Save Format:" HorizontalAlignment="Left" Margin="0,0,0,45" VerticalAlignment="Bottom"/>
                             <TextBox x:Name="txtFormatExample" Text="{Binding Path=FormatString, Mode=OneWay}" Height="45" Margin="0,0,80,0" TextWrapping="Wrap" VerticalAlignment="Bottom" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
                             <Button x:Name="cmdDefault" Content="_Default" HorizontalAlignment="Right" Margin="0,0,0,25" VerticalAlignment="Bottom" Width="75" Command="{Binding FormatColumnsAsDefaultCommand}"/>
@@ -71,10 +72,8 @@
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabFromSpotifyAccount" Header="From Account">
-                    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
                 </TabItem>
                 <TabItem x:Name="tabSettings" Header="Settings">
-                    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
                 </TabItem>
             </TabControl>
         </Grid>
