@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlaylistRetriever"
         mc:Ignorable="d"
-        Title="Spotify Playlist Retriever" Height="420" Width="420" MinWidth="420" MinHeight="472"
+        Title="Spotify Playlist Retriever" Height="500" Width="540" MinWidth="440" MinHeight="414"
         FontFamily="Verdana" FontSize="12"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Window.Resources>
@@ -14,61 +14,115 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid Height="50" Margin="5,0,5,0" VerticalAlignment="Top">
-            <Label x:Name="lblEncodedAccessKey" Content="Spotify Access Key:" Padding="2" />
-            <TextBox x:Name="txtAccessKey" Text="{Binding ApiAccessKey, Mode=TwoWay}" Margin="0,0,80,0" Height="20" VerticalAlignment="Bottom" />
-            <Button x:Name="btnBuildAccessKey" Content="Build..." Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="20" Width="75" Command="{Binding ShowBuildKeyDialogCommand}" />
-        </Grid>
-        <Grid Margin="0,55,0,0">
-
-            <TabControl x:Name="tabControl" Margin="0" Padding="0">
+        <Grid Margin="0">
+            <TabControl x:Name="tabControl" Margin="0" Padding="0" >
                 <TabItem x:Name="tabFromPlaylistID" Header="From Playlist ID">
                     <Grid Margin="0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" Name="AccessKeyRow" />
+                            <RowDefinition Height="1" />
+                            <RowDefinition Height="50" Name="PlaylistIDRow" />
+                            <RowDefinition Height="*" Name="LoadedPlaylistsRow" />
+                            <RowDefinition Height="20" Name="StatusBarRow" />
+                            <RowDefinition Height="80" Name="SafeFormatRow" />
+                            <RowDefinition Height="50" Name="SaveLocationRow" />
+                            <RowDefinition Height="30" Name="CancelButtonRow" />
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Access Key Grid -->
+                        <Grid Grid.Row="0">
+                            <Grid Height="50" Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="20" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Content="Spotify Access Key:" Padding="2" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="1" Text="{Binding ApiAccessKey, Mode=TwoWay}" Margin="0,0,80,0" Height="20" VerticalAlignment="Bottom" />
+                                <Button Grid.Row="1" Content="Build..." Margin="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="20" Width="75" Command="{Binding ShowBuildKeyDialogCommand}" />
+                            </Grid>
+                        </Grid>
+                        
+                        <Separator Grid.Row="1" Margin="0,0" HorizontalAlignment="Stretch" Height="1" Padding="0" VerticalAlignment="Center" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
                         <!-- Spotify Playlist Link Grid -->
-                        <Grid Margin="10,0,10,0" VerticalAlignment="Top" >
-                            <Label x:Name="lblPlaylistID" Content="_Public Spotify Playlist ID or URL:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
-                            <TextBox x:Name="txtPlaylistID" Text="{Binding Path=PlaylistID, Mode=TwoWay}" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay}" Margin="0,36,80,0" TextWrapping="Wrap" Height="43" VerticalAlignment="Top" ToolTip="The URL or ID of a public Spotify Playlist"/>
-                            <Button x:Name="cmdLoad" Content="_Load" Command="{Binding LoadPlaylistFromIDCommand}" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,59,0,0" Width="75" Padding="0"/>
+                        <Grid Grid.Row="2" Margin="5" VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="20" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Content="_Public Spotify Playlist ID or URL:" HorizontalAlignment="Left" Margin="0" Padding="2" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Text="{Binding Path=PlaylistID, Mode=TwoWay}" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay}" Margin="0,0,80,0" TextWrapping="Wrap" Height="20" VerticalAlignment="Top" ToolTip="The URL or ID of a public Spotify Playlist"/>
+                            <Button Grid.Row="1" Content="_Load" Command="{Binding LoadPlaylistFromIDCommand}" IsEnabled="{Binding Path=LoadEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0" Width="75" Padding="0"/>
 
                         </Grid>
 
                         <!-- Loaded Playlists Grid -->
-                        <Grid Margin="10,79,10,160">
-                            <Label x:Name="lblLoadedPlaylists" Content="Loaded Playlists:"/>
-                            <ListView x:Name="lvwLoadedPlaylists" Margin="0,25,80,00" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding LoadedPlaylistsList, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                        <Grid Grid.Row="3" Margin="5,5,5,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Content="Loaded Playlists:" Padding="2" VerticalAlignment="Center"/>
+                            <ListView Grid.Column="0" Grid.Row="1" x:Name="lvwLoadedPlaylists" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding LoadedPlaylistsList, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                 <ListView.View>
                                     <GridView ColumnHeaderContainerStyle="{StaticResource myHeaderStyle}">
                                         <GridViewColumn Header="Name" DisplayMemberBinding="{Binding name}" Width="500"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
-                            <Button x:Name="btnDeletePlaylist" Content="_Delete" Height="20" Width="75" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,00" IsEnabled="{Binding Path=DeletePlaylistEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button x:Name="btnReloadPlaylist" Content="_Reload" Height="20" Width="75" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,25" IsEnabled="{Binding Path=ReloadPlaylistEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Grid.Column="1" Grid.Row="1" Content="_Delete" Height="20" Width="75" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,00" IsEnabled="{Binding Path=DeletePlaylistEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Grid.Column="1" Grid.Row="1" Content="_Reload" Height="20" Width="75" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,25" IsEnabled="{Binding Path=ReloadPlaylistEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
 
                         <!-- Status Bar -->
-                        <StatusBar x:Name="sbPlaylistLoader" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Height="20" VerticalAlignment="Bottom" Margin="0,0,0,140" >
+                        <StatusBar Grid.Row="4" Height="20" Margin="0" VerticalAlignment="Bottom"  Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" >
                             <StatusBarItem x:Name="sbiPlaylistLoadStatus" Content="{Binding Path=PlaylistLoadStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Height="20" VerticalAlignment="Bottom" Margin="0,0,0,0" Padding="6,0,6,0"></StatusBarItem>
                         </StatusBar>
 
                         <!-- Save Format Grid -->
-                        <Grid Margin="10,0,10,90" VerticalAlignment="Bottom" Height="70">
-                            <Label x:Name="lblFormat" Content="Save Format:" HorizontalAlignment="Left" Margin="0,0,0,45" VerticalAlignment="Bottom"/>
-                            <TextBox x:Name="txtFormatExample" Text="{Binding Path=FormatString, Mode=OneWay}" Height="45" Margin="0,0,80,0" TextWrapping="Wrap" VerticalAlignment="Bottom" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
-                            <Button x:Name="cmdDefault" Content="_Default" HorizontalAlignment="Right" Margin="0,0,0,25" VerticalAlignment="Bottom" Width="75" Command="{Binding FormatColumnsAsDefaultCommand}"/>
-                            <Button x:Name="cmdFormat" Content="_Format..." HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="75" Command="{Binding OpenFormatWindowCommand}"/>
+                        <Grid Grid.Row="5" Margin="5" Height="70">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Content="Save Format:" HorizontalAlignment="Left" Margin="0" Padding="2" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Path=FormatString, Mode=OneWay}" Height="45" Margin="0" TextWrapping="Wrap" VerticalAlignment="Bottom" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                            <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <Button Width="75" Height="20" Margin="0" Content="_Format..." Command="{Binding OpenFormatWindowCommand}"/>
+                                <Button Width="75" Height="20" Margin="0,5,0,0" Content="_Default" Command="{Binding FormatColumnsAsDefaultCommand}"/>
+                            </StackPanel>
                         </Grid>
 
                         <!-- Save Location Grid -->
-                        <Grid Height="59" Margin="0,0,0,30" VerticalAlignment="Bottom" IsEnabled="False">
-                            <Label x:Name="lblSaveLocation" Content="Save _Location:" Margin="10,0,0,33" HorizontalAlignment="Left" Width="86" Height="26" VerticalAlignment="Bottom"/>
-                            <TextBox x:Name="txtSaveLocation" Text="{Binding Path=SaveLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="10,0,40,10" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
-                            <Button x:Name="cmdBrowseFilesystem" Content="..." HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Width="25" Height="23"/>
+                        <Grid Grid.Row="6" Height="60" Margin="5" IsEnabled="False">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="20" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="35" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Content="Save _Location:" Margin="0" Padding="2" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" Margin="0"  Height="20" Text="{Binding Path=SaveLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
+                            <Button Grid.Row="1" Grid.Column="1" Margin="0" Width="30" Height="20" Content="..." HorizontalAlignment="Right"/>
                         </Grid>
-                        
+
                         <!-- Save & Close Buttons -->
-                        <Button x:Name="cmdSave" Content="_Save" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" IsEnabled="{Binding Path=SaveEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Command="{Binding SavePlaylistFromIDCommand}"/>
-                        <Button x:Name="cmdClose" Content="_Close" HorizontalAlignment="Right" Margin="0,0,10,10" Width="75" Height="20" VerticalAlignment="Bottom" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                        <Grid Grid.Row="7">
+                            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Button Content="_Save" Width="75" Height="20" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsEnabled="{Binding Path=SaveEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Command="{Binding SavePlaylistFromIDCommand}"/>
+                                <Button Content="_Close" Width="75" Height="20" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabFromSpotifyAccount" Header="From Account">
