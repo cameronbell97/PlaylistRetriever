@@ -18,7 +18,7 @@ using PlaylistRetriever.ViewModels;
 
 namespace PlaylistRetriever.Infrastructure
 {
-    public class ViewModelLocator
+    internal class ViewModelLocator
     {
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
@@ -41,23 +41,17 @@ namespace PlaylistRetriever.Infrastructure
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<FormatColumnsDialogViewModel>();
             SimpleIoc.Default.Register<BuildKeyDialogViewModel>();
+            SimpleIoc.Default.Register<ManualPlaylistRipperViewModel>();
         }
 
         // Properties //
-        public MainViewModel Main
-        {
-            get => ServiceLocator.Current.GetInstance<MainViewModel>();
-        }
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
-        public FormatColumnsDialogViewModel FormatWindow
-        {
-            get => ServiceLocator.Current.GetInstance<FormatColumnsDialogViewModel>();
-        }
+        public FormatColumnsDialogViewModel FormatWindow => ServiceLocator.Current.GetInstance<FormatColumnsDialogViewModel>();
 
-        public BuildKeyDialogViewModel BuildKeyDialog
-        {
-            get => ServiceLocator.Current.GetInstance<BuildKeyDialogViewModel>();
-        }
+        public BuildKeyDialogViewModel BuildKeyDialog => ServiceLocator.Current.GetInstance<BuildKeyDialogViewModel>();
+
+        public ManualPlaylistRipperViewModel ManualPlaylistRipper => ServiceLocator.Current.GetInstance<ManualPlaylistRipperViewModel>();
 
         // Methods //
         public static void Cleanup()

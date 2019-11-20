@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -81,8 +83,11 @@
     </ApplicationDefinition>
     <Compile Include="Models\Responses\DialogResponse.cs" />
     <Compile Include="Models\Responses\FormatColumnsResponse.cs" />
+    <Compile Include="Models\SpotifyAccessCredentials.cs" />
     <Compile Include="Services\FormatColumnsDialogService.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
+    <Compile Include="Services\UriRegistrationService.cs" />
+    <Compile Include="ViewModels\ManualPlaylistRipperViewModel.cs" />
     <Compile Include="Views\BuildKeyDialogWindow.xaml.cs">
       <DependentUpon>BuildKeyDialogWindow.xaml</DependentUpon>
     </Compile>
@@ -94,6 +99,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\FormatDialogWindow.xaml.cs">
       <DependentUpon>FormatDialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManualPlaylistRipperControl.xaml.cs">
+      <DependentUpon>ManualPlaylistRipperControl.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\BuildKeyDialogWindow.xaml">
       <SubType>Designer</SubType>
@@ -112,6 +120,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\FormatDialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManualPlaylistRipperControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

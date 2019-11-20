@@ -51,7 +51,7 @@ namespace PlaylistRetriever.ViewModels
         {
             get => new ApiKeyResponse
             {
-                ApiKey = SpotifyClient.GetEncodedAPIKey(ClientID, ClientSecret),
+                ApiKey = SpotifyClientOld.GetEncodedAPIKey(ClientID, ClientSecret),
                 DialogResult = Cancelled ? DialogResultAction.Cancel : DialogResultAction.Submit
             };
         }
